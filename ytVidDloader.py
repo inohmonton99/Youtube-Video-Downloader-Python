@@ -3,13 +3,11 @@ import sys
 import time
 from pytube import YouTube
 import logging
-from bs4 import BeautifulSoup as bs
-import requests
 
 os.makedirs('./logs', exist_ok=True)
 logging.basicConfig(filename="./logs/ytDownload.log", level=logging.DEBUG, format="%(levelname)s - %(message)s")
 
-
+'''
 class progressBar:
     def __init__(self, barlength=25):
         self.barLength = barlength
@@ -60,7 +58,7 @@ def bytesToSTR(bts):
     else:  # No Conversion
         size = '%.2fb' % bts
     return size
-
+'''
 
 # Confirms if feeded URL is Youtube
 def confirmURL(ytUrl):
@@ -72,23 +70,18 @@ def confirmURL(ytUrl):
 # This will download URL provided to command
 def downloadVideoUrl(ytUrl, path):
     yt = YouTube(ytUrl)
-    stream = yt.streams.first()
-    stream.download(directory)
     try:  # Always download video in highest resolution
         stream = yt.streams.first()
-    except Exception:  # Sorts videos by resolution and picks the highest quality video if a 720p video doesn't exist
-        stream = sorted(yt.filter("mp4"), key=lambda video: int(video.resolution[:-1]), reverse=True)[0]
+    except Exception as exc:
+        print(exc)
 
-    print("downloading", yt.filename + " Video and Audio...")
+    print("downloading", yt.title + " Video and Audio...")
     try:
-        bar = progressBar()
-        stream.download(path, on_progress=bar.print_progress, on_finish=bar.print_end)
-        print("successfully downloaded", yt.filename, "!")
-    except:
-        pass
-    # TODO: download youtube url as variable
-    # TODO: check if url is associated with a video if not, return error
-    # TODO: download video url with file format(.mp4)
+        # bar = progressBar()
+        stream.download(path, yt.title)
+        print("successfully downloaded", yt.title, "!")
+    except Exception as exc:
+        print(exc)
 
 
 if __name__ == '__main__':
