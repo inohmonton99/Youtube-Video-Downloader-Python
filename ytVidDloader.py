@@ -2,19 +2,11 @@ import os
 import sys
 from pytube import YouTube
 import logging
-import time
 from tqdm import tqdm
 
-os.makedirs('./logs', exist_ok=True)
-logging.basicConfig(filename="./logs/ytDownload.log", level=logging.DEBUG, format="%(levelname)s - %(message)s")
+# os.makedir('./logs', exist_ok=True)
+# logging.basicConfig(filename="./logs/ytDownload.log", level=logging.DEBUG, format="%(levelname)s - %(message)s")
 
-# Handles progress bar when downloading
-def print_progress(stream, chunk, file_handle, bytes_remaining):
-    for i in tqdm(range(bytes_remaining)):
-        pass
-    print("download complete!")
-    exit()
-    
 
 # Confirms if feeded URL is Youtube
 def confirmURL(ytUrl):
@@ -22,16 +14,39 @@ def confirmURL(ytUrl):
         print("Please use a youtube URL")
         exit()
 
+
+def progressBar(stream):
+    for i in tqdm(range(stream.filesize)):
+        pass
+
+
 # This will download URL provided to command
-def downloadVideoUrl(stream, ytUrl, path):
+def downloadVideoUrl(stream, path):
     try:  # Always download video in highest resolution
-        stream = yt.streams.first()
+        stream = yt.streams.filter(file_extension='mp4').first()
     except Exception as exc:
         print(exc)
 
     print("downloading", yt.title + " Video and Audio...")
     try:
         stream.download(path, yt.title)
+        progressBar(stream)
+        print("files downloaded to {}".format(os.path.abspath(path)))
+    except Exception as exc:
+        print(exc)
+
+
+def downloadAudio(stream, path):
+    try:  # Always download audio in highest resolution
+        stream = yt.streams.filter(only_audio=True).first()
+    except Exception as exc:
+        print(exc)
+
+    print("downloading", yt.title + " Audio Only...")
+    try:
+        stream.download(path, yt.title)
+        progressBar(stream)
+        print("files downloaded to {}".format(os.path.abspath(path)))
     except Exception as exc:
         print(exc)
 
@@ -43,17 +58,19 @@ if __name__ == '__main__':
         exit()
     else:
         ytUrl = sys.argv[1]
-        yt = YouTube(ytUrl, on_progress_callback=print_progress)
-        directory = default_output_dir if len(sys.argv) != 3 else sys.argv[2]
+        yt = YouTube(ytUrl)
+        directory = default_output_dir
         confirmURL(ytUrl)
-    
+
     if not ytUrl.startswith("http"):
         ytUrl = 'https://' + ytUrl
 
-    # make directory if dir specified doesn't exist
     try:
+        # make directory if dir specified doesn't exist
         os.makedirs(directory, exist_ok=True)
-        downloadVideoUrl(yt, ytUrl, directory)
+        downloadVideoUrl(yt, directory)
+        # downloadAudio(yt, directory)
+
     except OSError as e:
         print(e)
         exit()
