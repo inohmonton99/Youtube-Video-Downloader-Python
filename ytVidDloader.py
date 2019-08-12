@@ -44,9 +44,9 @@ def downloadAudio(stream, path):
 
     print("downloading", yt.title + " Audio Only...")
     try:
-        stream.download(path, yt.title)
+        stream.download(path, yt.title + "_audio")
         progressBar(stream)
-        print("files downloaded to {}".format(os.path.abspath(path)))
+        print("{} downloaded to {}".format(yt.title, os.path.abspath(path)))
     except Exception as exc:
         print(exc)
 
@@ -69,7 +69,7 @@ if __name__ == '__main__':
         # make directory if dir specified doesn't exist
         os.makedirs(directory, exist_ok=True)
         downloadVideoUrl(yt, directory)
-        # downloadAudio(yt, directory)
+        downloadAudio(yt, directory)
 
     except OSError as e:
         print(e)
