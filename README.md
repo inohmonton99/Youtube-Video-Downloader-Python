@@ -2,12 +2,13 @@
 custom python script for downloading Youtube videos
 
 ## USAGE:
-**python ytVidDloaderL.py <_youtubeURL_> OR  
-python ytPlaylistDL.py <_youtubeURL_> <_destPath_>**
+```
+python ytVidDloaderL.py <youtubeURL>
 
-```bash
-ytVidDloader.py https://www.youtube.com/watch?v=hIcrtXLrixg ./download_folder
-downloading Cloud workflow automation for enterprise AI - RediMinds and Onepanel testimonial Video and Audio...
-successfully downloaded Cloud workflow automation for enterprise AI - RediMinds and Onepanel testimonial !
+ytVidDloader.py https://www.youtube.com/watch?v=oP_a_X8C6qM
+downloading Kubernetes powered workflow automation for computer vision Video and Audio...
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2019398/2019398 [00:00<00:00, 5026383.63it/s]
+files downloaded to D:\onepanel\output
+downloading Kubernetes powered workflow automation for computer vision Audio Only...
 
 ```
