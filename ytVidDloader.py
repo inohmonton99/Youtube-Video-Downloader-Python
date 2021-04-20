@@ -11,7 +11,7 @@ from tqdm import tqdm
 # Confirms if feeded URL is Youtube
 def confirmURL(ytUrl):
     if 'youtube' not in ytUrl.lower():
-        print("Please use a youtube URL")
+        print("Please use youtube URL")
         exit()
 
 
